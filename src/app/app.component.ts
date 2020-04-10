@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { configFirebase } from '../../configFirebase';
+import * as firebase from 'firebase/app';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  
   title = 'jambon';
+
+  constructor(){
+    firebase.initializeApp(configFirebase)
+  }
 }

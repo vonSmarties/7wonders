@@ -13,10 +13,11 @@ export class ApiService {
   public idGame:string
 
   constructor() {
+    console.log('alive')
     this.db = firebase.firestore()
     this.namePlayer = 'rageQuiter'
     this.getIdPlayer()
-    this.getIdGame()
+    // this.getIdGame()
   }
 
   async getIdPlayer(){
@@ -45,12 +46,16 @@ export class ApiService {
   }
 
   leaveGame(id:string){
-    
+    this.db.collection('games').doc(id).update({
+      players: firebase.firestore.FieldValue.arrayRemove({name:this.namePlayer, id:this.idPlayer })
+    })
+    this.idGame = null
   }
 
   createGame(){
     this.db.collection('games').add({
-      players:[{ name:this.namePlayer, id:this.idPlayer }]
+      players:[{ name:this.namePlayer, id:this.idPlayer }],
+      start:false
     })
   }
 }

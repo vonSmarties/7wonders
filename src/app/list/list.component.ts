@@ -24,18 +24,20 @@ export class ListComponent implements OnInit {
         snapshot.docChanges().forEach(change => {
           if( change.type == 'added'){
             this.listGames.push({id:change.doc.id, data:change.doc.data()})
-            console.log(this.listGames)
-            console.log('catch it', {id:change.doc.id, data:change.doc.data()})
           }
           if( change.type == 'modified'){
-            if( change.doc.data().start == true){
+            if( change.doc.data().status != "unstart"){
               const index = this.listGames.findIndex(game => game.id == change.doc.id)
-              this.listGames.splice(index,1)
+              if( index > -1 ){
+                this.listGames.splice(index,1)
+              }
             }
           }
           if( change.type == 'removed'){
             const index = this.listGames.findIndex(game => game.id == change.doc.id)
-            this.listGames.splice(index,1)            
+            if( index > -1 ){
+              this.listGames.splice(index,1)
+            }
           }
         })
       })

@@ -4,6 +4,7 @@
         <div *ngFor="let player of game.players">
             <p>{{player.name}}</p>
         </div>
-        <!-- <button (click)></button> -->
+        <button (click)="leaveGame()">quitter</button>
+        <button (click)="startGame()" [hidden]="!master()">Lancer</button>
     </div>
 </div>

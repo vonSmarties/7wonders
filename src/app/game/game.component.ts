@@ -19,10 +19,29 @@ export class GameComponent implements OnInit {
 
   followLead(){
     this.unsubscribeFollow = this.api.getStatusGame().onSnapshot( doc => {
-      this.game = doc.data()
-      console.log(this.game)
-      if(doc.data().status == 'start'){}
+      if(doc.exists){
+        this.game = doc.data()
+        // if(doc.data().status == 'start'){}
+      } else {
+        this.api.idGame = null
+        this.unsubscribeFollow()
+        this.api.leaveGame()
+      }
     })
+  }
+
+  master(){
+    const index = this.game.players.findIndex( player => player.id == this.api.idPlayer)
+    return this.game.players[index].master
+  }
+
+  leaveGame(){
+    this.unsubscribeFollow()
+    if(this.master()){
+      this.api.deleteGame()
+    } else {
+      this.api.leaveGame()
+    }
   }
 
 }

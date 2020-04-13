@@ -12,12 +12,10 @@ export class ApiService {
   public idPlayer:string
   public namePlayer:string
   public idGame:string
-  public master:boolean
 
   constructor(private router:Router) {
     this.db = firebase.firestore()
     this.namePlayer = 'rageQuiter'
-    this.master = false
     this.getIdPlayer()
     // this.getIdGame()
   }
@@ -47,26 +45,35 @@ export class ApiService {
   joinGame(id:string){
     this.idGame = id
     this.db.collection('games').doc(id).update({
-      players: firebase.firestore.FieldValue.arrayUnion({ name:this.namePlayer, id:this.idPlayer, master:this.master })  
+      players: firebase.firestore.FieldValue.arrayUnion({ name:this.namePlayer, id:this.idPlayer, master:false })  
     })
     this.router.navigateByUrl('game')
   }
 
-  leaveGame(id:string){
-    this.db.collection('games').doc(id).update({
-      players: firebase.firestore.FieldValue.arrayRemove({name:this.namePlayer, id:this.idPlayer })
-    })
-    this.idGame = null
+  leaveGame(){
+    if (this.idGame){
+      this.db.collection('games').doc(this.idGame).update({
+        players: firebase.firestore.FieldValue.arrayRemove({name:this.namePlayer, id:this.idPlayer, master:false })
+      })
+      this.idGame = null
+    }
+    this.router.navigateByUrl('')
   }
 
   createGame(){
     this.db.collection('games').add({
-      players:[{ name:this.namePlayer, id:this.idPlayer, master:this.master }],
+      players:[{ name:this.namePlayer, id:this.idPlayer, master:true }],
       status:'unstart'
     }).then(doc => {
       this.idGame = doc.id
       this.router.navigateByUrl('game')
     })
+  }
+
+  deleteGame(){
+    this.db.collection('games').doc(this.idGame).delete()
+    this.idGame = null
+    this.router.navigateByUrl('')
   }
 
   getStatusGame(){

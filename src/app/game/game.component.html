@@ -1,1 +1,9 @@
-<p>game works!</p>
+<div *ngIf="game">
+    <div [hidden]="game.status != 'unstart'">
+        <p>Joueurs présents</p>
+        <div *ngFor="let player of game.players">
+            <p>{{player.name}}</p>
+        </div>
+        <!-- <button (click)></button> -->
+    </div>
+</div>

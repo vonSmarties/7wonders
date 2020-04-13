@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
-import 'firebase/firestore'
-import * as firebase from 'firebase/app';
-import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-list',
@@ -11,22 +8,18 @@ import { interval, Subscription } from 'rxjs';
 })
 export class ListComponent implements OnInit {
 
-  private db:firebase.firestore.Firestore
   public listGames:any[]
-  private unsubscribeScout
+  private unsubscribeScout:any
 
-  constructor(public api:ApiService) { 
-  }
+  constructor(public api:ApiService) { }
 
   ngOnInit() {
-    this.db = firebase.firestore()
     this.listGames = []
     this.scoutUnstartGames()
   }
 
   scoutUnstartGames(){
-    this.unsubscribeScout = this.db.collection('games')
-      .where('start', '==', false)
+    this.unsubscribeScout = this.api.scoutUnstartGame()
       .onSnapshot( snapshot => {
         snapshot.docChanges().forEach(change => {
           if( change.type == 'added'){

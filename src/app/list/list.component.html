@@ -1,9 +1,9 @@
 <form action="">
     <input type="text" [value]="api.namePlayer" (change)="changeName($event.target.value)">
 </form>
-<div *ngFor="let game of listGames" (click)="api.joinGame(game.id)">
-    <a [routerLink]="['game']">partie de {{ game.data.players[0].name }}</a>
-</div>
-<div (click)="createGame()">
-    <a [routerLink]="['game']">Créer une partie</a>
-</div>
+<a *ngFor="let game of listGames" (click)="api.joinGame(game.id)">
+    <p>partie de {{ game.data.players[0].name }}</p>
+</a>
+<a (click)="createGame()">
+    <p>Créer une partie</p>
+</a>

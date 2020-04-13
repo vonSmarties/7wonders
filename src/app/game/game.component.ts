@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-game',
@@ -7,9 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GameComponent implements OnInit {
 
-  constructor() { }
+  game:any
+  private unsubscribeFollow: any;
+
+  constructor(public api:ApiService) { }
 
   ngOnInit() {
+    this.followLead()
+  }
+
+  followLead(){
+    this.unsubscribeFollow = this.api.getStatusGame().onSnapshot( doc => {
+      this.game = doc.data()
+      console.log(this.game)
+      if(doc.data().status == 'start'){}
+    })
   }
 
 }

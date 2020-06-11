@@ -1,6 +1,6 @@
 # Game
 
-Ce projet à pour vocation de créer une application web pour jouer au jeux seven Wonders.
+Ce projet à pour vocation de créer une application web pour jouer au jeu seven Wonders.
 
 ## Tech
 
